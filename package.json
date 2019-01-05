@@ -7,16 +7,21 @@
   },
   "scripts": {
     "postinstall": "./postinstall.sh",
-    "start": "babel-node index.js",
-    "lint": "eslint --no-ignore . .eslintrc.js",
+    "start": "webpack-dev-server --mode development",
+    "lint": "eslint --no-ignore . .eslintrc.js --fix",
     "mocha": "mocha test/test_*",
     "test": "npm run lint && npm run mocha"
   },
   "dependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.3",
+    "@babel/preset-react": "^7.0.0",
     "babel-cli": "^6.26.0",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-preset-env": "^1.6.1",
-    "express": "^4.15.2"
+    "babel-loader": "^8.0.5",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0",
+    "webpack": "^4.28.3",
+    "webpack-cli": "^3.2.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
@@ -26,6 +31,7 @@
     "eslint-plugin-node": "^8.0.1",
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0",
-    "mocha": "^5.1.1"
+    "mocha": "^5.1.1",
+    "webpack-dev-server": "^3.1.14"
   }
 }
