@@ -1,0 +1,20 @@
+#!/bin/bash -e
+
+cd "$(dirname "$0")/.."
+
+if ! ${CI:-false}; then
+  echo CI is not true
+  exit 0
+fi
+
+set -x
+
+# Build/test
+(
+  set -x
+  npm install
+  npm run lint
+  npm run test
+)
+
+exit 0
