@@ -9,11 +9,17 @@ module.exports = { // eslint-disable-line import/no-commonjs
     'eslint:recommended',
     'plugin:import/errors',
     'plugin:import/warnings',
+    'plugin:react/recommended',
   ],
   'parser': 'babel-eslint',
   'parserOptions': {
     'sourceType': 'module',
     'ecmaVersion': 8,
+  },
+  'settings': {
+    'react': {
+      'version': 'detect',
+    },
   },
   'rules': {
     'import/first': [

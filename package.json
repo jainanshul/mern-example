@@ -7,8 +7,9 @@
   },
   "scripts": {
     "postinstall": "./postinstall.sh",
+    "build": "webpack --mode development",
     "start": "webpack-dev-server --mode development",
-    "lint": "eslint --no-ignore . .eslintrc.js --fix",
+    "lint": "eslint --no-ignore src/**/*.js .eslintrc.js --fix",
     "mocha": "mocha test/test_*",
     "test": "npm run lint && npm run mocha"
   },
@@ -20,6 +21,7 @@
     "babel-loader": "^8.0.5",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
+    "react-router-dom": "^4.3.1",
     "webpack": "^4.28.3",
     "webpack-cli": "^3.2.0"
   },
@@ -30,6 +32,7 @@
     "eslint-plugin-import": "^2.11.0",
     "eslint-plugin-node": "^8.0.1",
     "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-react": "^7.12.3",
     "eslint-plugin-standard": "^4.0.0",
     "mocha": "^5.1.1",
     "webpack-dev-server": "^3.1.14"
