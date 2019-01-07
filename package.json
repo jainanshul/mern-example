@@ -9,7 +9,7 @@
     "postinstall": "./postinstall.sh",
     "build": "webpack --mode production",
     "start": "webpack-dev-server --mode development",
-    "lint": "eslint --no-ignore src/**/*.js .eslintrc.js --fix",
+    "lint": "eslint . --fix",
     "mocha": "mocha test/test_*",
     "test": "npm run lint && npm run mocha"
   },
