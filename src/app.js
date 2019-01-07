@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Switch, BrowserRouter, Route} from 'react-router-dom';
+import React, {Component} from 'react';
+import {Switch, BrowserRouter, Route} from 'react-router-dom';
 
 export default class App extends Component {
   render() {
@@ -14,5 +14,5 @@ export default class App extends Component {
   }
 }
 
-const Home = () => (<h1> Hello this is home.</h1>);
-const About = () => (<h1> This is the about page.</h1>);
+const Home = () => (<h1> Hello this is home</h1>);
+const About = () => (<h1> This is the about page</h1>);
