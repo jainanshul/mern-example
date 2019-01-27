@@ -1,4 +1,4 @@
-import { check, validationResult } from 'express-validator/check';
+import {check, validationResult} from 'express-validator/check';
 
 import User from '../../models/user';
 
@@ -8,7 +8,9 @@ const regValidation = [
   .isEmpty()
   .withMessage('Email is required')
   .isEmail()
-  .withMessage('Email should be an email address'),
+  .withMessage('Email should be an email address')
+  .normalizeEmail({lowercase: true})
+  .trim(),
   check('password')
   .not()
   .isEmpty()
