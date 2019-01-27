@@ -1,25 +1,23 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import routes from './routes';
 
 require('dotenv').config();
 
 const app = express();
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 const port = process.env.PORT || 5000;
 
+// Set up Mongoose
 mongoose.connect(process.env.DB_URL, { useNewUrlParser: true })
 .then(() => console.log('Database connected successfully'))
 .catch(err => console.log(err));
 
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
-
-app.use((req, res, next) => {
-  res.send('Welcome to Express');
-});
+// Setup API routes
+routes(app);
 
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`)
+  console.log(`Server running on port ${port}`);
 });
