@@ -46,7 +46,7 @@ export class Register extends React.Component {
         });
 
         // Go to login screen
-        this.props.history.push("/login");
+        this.props.history.push('/login');
       } else {
         this.setState({
           error: json.errorMessage,
@@ -58,7 +58,7 @@ export class Register extends React.Component {
 
   render() {
     const { username, password, isLoading, error } = this.state;
-     return (
+    return (
       <div className="col-md-6 col-md-offset-3">
         <h2>Register</h2>
         <form name="form" onSubmit={this.handleSubmit}>

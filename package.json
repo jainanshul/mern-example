@@ -9,7 +9,7 @@
     "start": "babel-node server/server.js",
     "start-watch": "nodemon --exec babel-node server/server.js",
     "dev": "concurrently \"npm run start-watch\" \"cd client && npm start\"",
-    "lint": "concurrently \"cd client && npm run lint\" \"eslint server --fix \"",
+    "lint": "eslint . --fix",
     "mocha": "mocha test/test_*",
     "test": "npm run lint && npm run mocha"
   },

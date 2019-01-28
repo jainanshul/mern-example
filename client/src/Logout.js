@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+
 import user from './User';
 
 export class Logout extends Component {
@@ -30,14 +31,14 @@ export class Logout extends Component {
       });
 
       // Go to login screen
-      this.props.history.push("/login");
+      this.props.history.push('/login');
     })
     .catch((error) => {
       this.setState({
         isLoading: false,
         error: error.message,
       });
-    })
+    });
   }
 
   render() {

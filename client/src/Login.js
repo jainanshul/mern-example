@@ -1,4 +1,5 @@
 import React from 'react';
+
 import user from './User';
 
 export class Login extends React.Component {
@@ -36,19 +37,19 @@ export class Login extends React.Component {
       });
 
       // Go to logout screen
-      this.props.history.push("/logout");
+      this.props.history.push('/logout');
     })
     .catch((error) => {
       this.setState({
         error: error.message,
         isLoading: false,
       });
-    })
+    });
   }
 
   render() {
     const { username, password, isLoading, error } = this.state;
-     return (
+    return (
       <div className="col-md-6 col-md-offset-3">
         <h2>Login</h2>
         <form name="form" onSubmit={this.handleSubmit}>

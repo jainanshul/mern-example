@@ -54,6 +54,7 @@ module.exports = { // eslint-disable-line import/no-commonjs
       'error',
       'single', {'avoidEscape': true, 'allowTemplateLiterals': true},
     ],
+    'react/prop-types': 0,
     'require-await': [
       'error'
     ],
