@@ -5,9 +5,8 @@ import {
   Route,
 } from 'react-router-dom';
 
-import {Logout} from './Logout';
-import {Login} from './Login';
-import {Register} from './Register';
+import Logout from './Logout';
+import Authenticator from './Authenticator';
 import PrivateRoute from './PrivateRoute';
 
 export default class App extends Component {
@@ -15,9 +14,8 @@ export default class App extends Component {
     return (
       <BrowserRouter>
         <Switch>
-          <Route exact path='/' component={Login} />
-          <Route exact path='/login' component={Login} />
-          <PrivateRoute path='/register' component={Register} />
+          <Route path='/auth' component={Authenticator} />
+          <PrivateRoute exact path='/' component={Logout} />
           <PrivateRoute path='/logout' component={Logout} />
         </Switch>
       </BrowserRouter>

@@ -1,8 +1,9 @@
 import React from 'react';
+import {withRouter} from 'react-router-dom';
 
 import user from './User';
 
-export class Login extends React.Component {
+class Login extends React.Component {
   constructor(props) {
     super(props);
 
@@ -36,8 +37,8 @@ export class Login extends React.Component {
         signInEmail: '',
       });
 
-      // Go to logout screen
-      this.props.history.push('/logout');
+      // Go to home
+      this.props.history.push('/');
     })
     .catch((error) => {
       this.setState({
@@ -72,3 +73,5 @@ export class Login extends React.Component {
     );
   }
 }
+
+export default withRouter(Login);

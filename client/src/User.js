@@ -11,13 +11,13 @@ class User {
     return this._email;
   }
 
-  login(signInEmail, signInPassword) {
+  login(email, password) {
     return fetch('/api/account/signin', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
-        email: signInEmail,
-        password: signInPassword,
+        email: email,
+        password: password,
       }),
     })
     .then(res => res.json())
@@ -42,6 +42,27 @@ class User {
     .then(json => {
       if (json.success) {
         this._reset();
+      } else {
+        throw new Error(json.errorMessage);
+      }
+    });
+  }
+
+  register(email, password) {
+    return fetch('/api/account/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+    })
+    .then(res => res.json())
+    .then(json => {
+      if (json.success) {
+        this._email = json.email;
       } else {
         throw new Error(json.errorMessage);
       }

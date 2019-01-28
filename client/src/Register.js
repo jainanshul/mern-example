@@ -1,12 +1,15 @@
 import React from 'react';
+import {withRouter} from 'react-router-dom';
 
-export class Register extends React.Component {
+import user from './User';
+
+class Register extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      signUpEmail: '',
-      signUpPassword: '',
+      email: '',
+      password: '',
       isLoading: false,
       error: ''
     };
@@ -24,51 +27,40 @@ export class Register extends React.Component {
       isLoading: true,
       error: '',
     });
-    const { signUpEmail, signUpPassword } = this.state;
+    const { email, password } = this.state;
 
-    fetch('/api/account/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        email: signUpEmail,
-        password: signUpPassword,
-      }),
-    })
-    .then(res => res.json())
+    user.register(email, password)
     .then(json => {
-      if (json.success) {
-        this.setState({
-          isLoading: false,
-          signUpEmail: '',
-          signUpPassword: '',
-        });
+      this.setState({
+        isLoading: false,
+        email: '',
+        password: '',
+      });
 
-        // Go to login screen
-        this.props.history.push('/login');
-      } else {
-        this.setState({
-          error: json.errorMessage,
-          isLoading: false,
-        });
-      }
-    });
+      // Go to home
+      this.props.history.push('/');
+    })
+    .catch((error) => {
+      this.setState({
+        error: error.message,
+        isLoading: false,
+      });
+    })
   }
 
   render() {
-    const { username, password, isLoading, error } = this.state;
+    const {username, password, isLoading, error} = this.state;
     return (
       <div className="col-md-6 col-md-offset-3">
         <h2>Register</h2>
         <form name="form" onSubmit={this.handleSubmit}>
           <div className={'form-group'}>
             <label htmlFor="username">Username</label>
-            <input type="text" className="form-control" name="signUpEmail" value={username} onChange={this.handleChange} />
+            <input type="text" className="form-control" name="email" value={username} onChange={this.handleChange} />
           </div>
           <div className={'form-group'}>
             <label htmlFor="password">Password</label>
-            <input type="password" className="form-control" name="signUpPassword" value={password} onChange={this.handleChange} />
+            <input type="password" className="form-control" name="password" value={password} onChange={this.handleChange} />
           </div>
           <div className="form-group">
             <button className="btn btn-primary" disabled={isLoading}>Register</button>
@@ -81,3 +73,5 @@ export class Register extends React.Component {
     );
   }
 }
+
+export default withRouter(Register);

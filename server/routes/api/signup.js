@@ -53,9 +53,11 @@ module.exports = (app) => { // eslint-disable-line import/no-commonjs
           errorMessage: 'Error: Unknown server error'
         });
       }
+
+      req.session.userId = newUser._id; // Save the session id
       return res.send({
         success: true,
-        errorMessage: 'Signed up'
+        email: newUser.email,
       });
     });
   });
