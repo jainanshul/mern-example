@@ -28,7 +28,6 @@ export class Login extends React.Component {
     const { signInEmail, signInPassword } = this.state;
 
     user.login(signInEmail, signInPassword, (error) => {
-      console.log('Login result: ', error);
       if (error) {
         this.setState({
           error: error,

@@ -38,6 +38,7 @@ module.exports = (app) => { // eslint-disable-line import/no-commonjs
         req.session.userId = user._id; // Save the session id
         return res.send({
           success: true,
+          email: user.email,
         });
       }
 

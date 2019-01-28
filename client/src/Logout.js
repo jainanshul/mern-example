@@ -41,24 +41,19 @@ export class Logout extends Component {
   }
 
   render() {
-    const {
-      isLoading,
-      error,
-    } = this.state;
+    const {isLoading, error} = this.state;
 
     if (isLoading) {
       return (<div><p>Loading...</p></div>);
     }
 
     return (
-      <div>
-        {
-          (error) ? (
-            <p>{error}</p>
-          ) : (null)
+      <div className="col-md-6 col-md-offset-3">
+        <h2>User {user.info()}</h2>
+        <button className="btn btn-primary" disabled={isLoading} onClick={this.logout}>Logout</button>
+        {error &&
+          <div className={'alert alert-danger'}>{error}</div>
         }
-        <p>Profile</p>
-        <button onClick={this.logout}>Logout</button>
       </div>
     );
   }

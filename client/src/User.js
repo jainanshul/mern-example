@@ -1,12 +1,16 @@
 
 class User {
   constructor() {
-    this.isAuthenticated = false;
+    this._reset();
   }
 
   isLoggedIn() {
-    console.log(`isLoggedIn ${this.isAuthenticated}`);
-    return this.isAuthenticated;
+    console.log(`isLoggedIn ${this._isAuthenticated}`);
+    return this._isAuthenticated;
+  }
+
+  info() {
+    return this._email;
   }
 
   login(signInEmail, signInPassword, cb) {
@@ -24,7 +28,8 @@ class User {
     .then(json => {
       // Sign in successful
       if (json.success) {
-        this.isAuthenticated = true;
+        this._isAuthenticated = true;
+        this._email = json.email;
         cb(null);
       } else {
         cb(json.errorMessage);
@@ -43,11 +48,16 @@ class User {
     .then(json => {
       if (json.success) {
         cb(null);
-        this.isAuthenticated = false;
+        this._reset();
       } else {
         cb(json.errorMessage);
       }
     });
+  }
+
+  _reset() {
+    this._isAuthenticated = false;
+    this._email = '';
   }
 }
 
