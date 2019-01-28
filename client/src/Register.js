@@ -49,7 +49,7 @@ export class Register extends React.Component {
         this.props.history.push("/login");
       } else {
         this.setState({
-          error: json.message,
+          error: json.errorMessage,
           isLoading: false,
         });
       }

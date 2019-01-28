@@ -6,7 +6,7 @@ module.exports = (app) => { // eslint-disable-line import/no-commonjs
         if (err) {
           return res.send({
             success: false,
-            message: 'Failed to logout'
+            errorMessage: 'Failed to logout'
           });
         } else {
           req.session = null;
@@ -18,7 +18,7 @@ module.exports = (app) => { // eslint-disable-line import/no-commonjs
     } else {
       return res.send({
         success: false,
-        message: 'No active session exists'
+        errorMessage: 'No active session exists'
       });
     }
   });

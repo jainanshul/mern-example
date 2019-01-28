@@ -27,7 +27,7 @@ class User {
         this.isAuthenticated = true;
         cb(null);
       } else {
-        cb(json.message);
+        cb(json.errorMessage);
       }
     });
   }
@@ -45,7 +45,7 @@ class User {
         cb(null);
         this.isAuthenticated = false;
       } else {
-        cb(json.message);
+        cb(json.errorMessage);
       }
     });
   }

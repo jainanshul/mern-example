@@ -21,7 +21,7 @@ module.exports = (app) => { // eslint-disable-line import/no-commonjs
     if (!errors.isEmpty()) {
       return res.send({
         success: false,
-        message: errors.array().reduce((acc, cur) => `${cur.msg}. ${acc}`, ''),
+        errorMessage: errors.array().reduce((acc, cur) => `${cur.msg}. ${acc}`, ''),
       });
     }
 
@@ -38,7 +38,6 @@ module.exports = (app) => { // eslint-disable-line import/no-commonjs
         req.session.userId = user._id; // Save the session id
         return res.send({
           success: true,
-          message: 'Valid sign in',
         });
       }
 
@@ -48,17 +47,17 @@ module.exports = (app) => { // eslint-disable-line import/no-commonjs
       case reasons.NOT_FOUND:
         return res.send({
           success: false,
-          message: 'No such account exists',
+          errorMessage: 'No such account exists',
         });
       case reasons.PASSWORD_INCORRECT:
         return res.send({
           success: false,
-          message: 'Invalid password',
+          errorMessage: 'Invalid password',
         });
       case reasons.MAX_ATTEMPTS:
         return res.send({
           success: false,
-          message: 'Max login attempt exceeded. Account is locked.',
+          errorMessage: 'Max login attempt exceeded. Account is locked.',
         });
       }
     });

@@ -35,7 +35,7 @@ module.exports = (app) => { // eslint-disable-line import/no-commonjs
     if (!errors.isEmpty()) {
       return res.send({
         success: false,
-        message: errors.array().reduce((acc, cur) => `${cur.msg}. ${acc}`, ''),
+        errorMessage: errors.array().reduce((acc, cur) => `${cur.msg}. ${acc}`, ''),
       });
     }
 
@@ -50,12 +50,12 @@ module.exports = (app) => { // eslint-disable-line import/no-commonjs
       if (err) {
         return res.send({
           success: false,
-          message: 'Error: Server error'
+          errorMessage: 'Error: Unknown server error'
         });
       }
       return res.send({
         success: true,
-        message: 'Signed up'
+        errorMessage: 'Signed up'
       });
     });
   });
