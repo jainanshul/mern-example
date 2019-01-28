@@ -28,37 +28,39 @@ module.exports = (app) => { // eslint-disable-line import/no-commonjs
     const { body } = req;
     const {password, email} = body;
 
-    User.find({
-      email: email
-    }, (err, users) => {
+    User.getAuthenticated(email, password, function(err, user, reason) {
       if (err) {
+        throw err;
+      }
+
+      // Login was successful if we have a user
+      if (user) {
+        req.session.userId = user._id; // Save the session id
         return res.send({
-          success: false,
-          message: 'Error: server error'
+          success: true,
+          message: 'Valid sign in',
         });
       }
 
-      if (!users || users.length <= 0) {
+      // Otherwise we can determine why we failed
+      const reasons = User.failedLogin;
+      switch (reason) {
+      case reasons.NOT_FOUND:
         return res.send({
           success: false,
-          message: 'No such account exists'
+          message: 'No such account exists',
         });
-      }
-
-      const user = users[0];
-      if (!user.validPassword(password)) {
+      case reasons.PASSWORD_INCORRECT:
         return res.send({
           success: false,
-          message: 'Invalid password'
+          message: 'Invalid password',
+        });
+      case reasons.MAX_ATTEMPTS:
+        return res.send({
+          success: false,
+          message: 'Max login attempt exceeded. Account is locked.',
         });
       }
-
-      // Save the session id
-      req.session.userId = user._id;
-      return res.send({
-        success: true,
-        message: 'Valid sign in',
-      });
     });
   });
 };
