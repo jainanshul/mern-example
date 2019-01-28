@@ -23,20 +23,20 @@ export class Logout extends Component {
       error: '',
     });
 
-    user.logout((error) => {
-      if (error) {
-        this.setState({
-          isLoading: false,
-          error: error,
-        });
-      } else {
-        this.setState({
-          isLoading: false
-        });
+    user.logout()
+    .then(() => {
+      this.setState({
+        isLoading: false
+      });
 
-        // Go to login screen
-        this.props.history.push("/login");
-      }
+      // Go to login screen
+      this.props.history.push("/login");
+    })
+    .catch((error) => {
+      this.setState({
+        isLoading: false,
+        error: error.message,
+      });
     })
   }
 

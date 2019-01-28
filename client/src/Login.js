@@ -27,23 +27,23 @@ export class Login extends React.Component {
     });
     const { signInEmail, signInPassword } = this.state;
 
-    user.login(signInEmail, signInPassword, (error) => {
-      if (error) {
-        this.setState({
-          error: error,
-          isLoading: false,
-        });
-      } else {
-        this.setState({
-          isLoading: false,
-          signInPassword: '',
-          signInEmail: '',
-        });
+    user.login(signInEmail, signInPassword)
+    .then(() => {
+      this.setState({
+        isLoading: false,
+        signInPassword: '',
+        signInEmail: '',
+      });
 
-        // Go to logout screen
-        this.props.history.push("/logout");
-      }
-    });
+      // Go to logout screen
+      this.props.history.push("/logout");
+    })
+    .catch((error) => {
+      this.setState({
+        error: error.message,
+        isLoading: false,
+      });
+    })
   }
 
   render() {
