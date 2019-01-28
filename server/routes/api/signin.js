@@ -1,7 +1,6 @@
 import {check, validationResult} from 'express-validator/check';
 
 import User from '../../models/user';
-import UserSession from '../../models/user_session';
 
 const regValidation = [
   check('email')
@@ -53,22 +52,12 @@ module.exports = (app) => { // eslint-disable-line import/no-commonjs
           message: 'Invalid password'
         });
       }
-      // Otherwise correct user
-      const userSession = new UserSession();
-      userSession.userId = user._id;
-      userSession.save((err, doc) => {
-        if (err) {
-          console.log(err);
-          return res.send({
-            success: false,
-            message: 'Error: server error'
-          });
-        }
-        return res.send({
-          success: true,
-          message: 'Valid sign in',
-          token: doc._id
-        });
+
+      // Save the session id
+      req.session.userId = user._id;
+      return res.send({
+        success: true,
+        message: 'Valid sign in',
       });
     });
   });

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Switch, BrowserRouter, Route} from 'react-router-dom';
 
 import {Home} from './Home';
+import {Logout} from './Logout';
 
 export default class App extends Component {
   render() {
@@ -9,11 +10,9 @@ export default class App extends Component {
       <BrowserRouter>
         <Switch>
           <Route exact path='/' component={Home} />
-          <Route exact path='/about' component={About} />
+          <Route exact path='/logout' component={Logout} />
         </Switch>
       </BrowserRouter>
     );
   }
 }
-
-const About = () => (<h1> This is the about page</h1>);
