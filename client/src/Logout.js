@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import user from './User';
 
 export class Logout extends Component {
   constructor(props) {
@@ -6,7 +7,7 @@ export class Logout extends Component {
 
     this.state = {
       isLoading: true,
-      logoutError: '',
+      error: '',
     };
   }
 
@@ -19,37 +20,30 @@ export class Logout extends Component {
   logout = () => {
     this.setState({
       isLoading: true,
-      logoutError: '',
+      error: '',
     });
 
-    fetch('/api/account/logout', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    })
-    .then(res => res.json())
-    .then(json => {
-      if (json.success) {
+    user.logout((error) => {
+      if (error) {
+        this.setState({
+          isLoading: false,
+          error: error,
+        });
+      } else {
         this.setState({
           isLoading: false
         });
 
         // Go to login screen
-        this.props.history.push("/");
-      } else {
-        this.setState({
-          isLoading: false,
-          logoutError: json.message,
-        });
+        this.props.history.push("/login");
       }
-    });
+    })
   }
 
   render() {
     const {
       isLoading,
-      logoutError,
+      error,
     } = this.state;
 
     if (isLoading) {
@@ -59,8 +53,8 @@ export class Logout extends Component {
     return (
       <div>
         {
-          (logoutError) ? (
-            <p>{logoutError}</p>
+          (error) ? (
+            <p>{error}</p>
           ) : (null)
         }
         <p>Profile</p>

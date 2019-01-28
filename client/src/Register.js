@@ -44,6 +44,9 @@ export class Register extends React.Component {
           signUpEmail: '',
           signUpPassword: '',
         });
+
+        // Go to login screen
+        this.props.history.push("/login");
       } else {
         this.setState({
           error: json.message,

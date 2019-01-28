@@ -1,4 +1,5 @@
 import React from 'react';
+import user from './User';
 
 export class Login extends React.Component {
   constructor(props) {
@@ -26,22 +27,15 @@ export class Login extends React.Component {
     });
     const { signInEmail, signInPassword } = this.state;
 
-    fetch('/api/account/signin', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        email: signInEmail,
-        password: signInPassword,
-      }),
-    })
-    .then(res => res.json())
-    .then(json => {
-      // Sign in successful
-      if (json.success) {
+    user.login(signInEmail, signInPassword, (error) => {
+      console.log('Login result: ', error);
+      if (error) {
         this.setState({
-          signInError: json.message,
+          error: error,
+          isLoading: false,
+        });
+      } else {
+        this.setState({
           isLoading: false,
           signInPassword: '',
           signInEmail: '',
@@ -49,11 +43,6 @@ export class Login extends React.Component {
 
         // Go to logout screen
         this.props.history.push("/logout");
-      } else {
-        this.setState({
-          error: json.message,
-          isLoading: false,
-        });
       }
     });
   }
