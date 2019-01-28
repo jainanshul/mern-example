@@ -3,7 +3,7 @@ import {withRouter} from 'react-router-dom';
 
 import user from './User';
 
-class Logout extends Component {
+class Home extends Component {
   constructor(props) {
     super(props);
 
@@ -61,4 +61,4 @@ class Logout extends Component {
   }
 }
 
-export default withRouter(Logout);
+export default withRouter(Home);
