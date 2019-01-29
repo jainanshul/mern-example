@@ -2,6 +2,7 @@ import express from 'express';
 import session from 'express-session';
 import mongoose from 'mongoose';
 import connectMongo from 'connect-mongo';
+import cors from 'cors';
 
 import routes from './routes';
 
@@ -26,6 +27,9 @@ app.use(session({
   saveUninitialized: false,
   store: new MongoStore({mongooseConnection: mongoose.connection}),
 }));
+
+// Setup CORS
+app.use(cors());
 
 // Setup API routes
 routes(app);
