@@ -9,6 +9,7 @@ import Home from './Home';
 import Authenticator from './Authenticator';
 import Register from './Register';
 import PrivateRoute from './PrivateRoute';
+import Page404 from './Page404';
 
 export default class App extends Component {
   render() {
@@ -19,6 +20,7 @@ export default class App extends Component {
           <Route path='/register' component={Register} />
           <PrivateRoute exact path='/' component={Home} />
           <PrivateRoute path='/home' component={Home} />
+          <Route component={Page404} />
         </Switch>
       </BrowserRouter>
     );
