@@ -43,7 +43,11 @@ module.exports = (app) => { // eslint-disable-line import/no-commonjs
       newUser.password = newUser.generateHash(password);
       await newUser.save();
 
-      req.session.userId = newUser._id; // Save the session id
+      // Save the session id
+      req.session.userId = newUser._id;
+
+      // Set the location header
+      res.location(`/user/:${newUser._id}`);
 
       return res.status(201).send({
         email: newUser.email,
