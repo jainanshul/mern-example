@@ -12,7 +12,7 @@ class User {
   }
 
   login(email, password) {
-    return fetch('/api/account/signin', {
+    return fetch('/user/login', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -20,52 +20,35 @@ class User {
         password: password,
       }),
     })
-    .then(res => res.json())
-    .then(json => {
-      // Sign in successful
-      if (json.success) {
-        this._email = json.email;
-      } else {
-        throw new Error(json.errorMessage);
-      }
+    .then((res) => this._fetchHandler(res))
+    .then((json) => {
+      this._email = json.email; // Login successful
     });
   }
 
   logout() {
-    return fetch('/api/account/logout', {
+    return fetch('/user/logout', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: {'Content-Type': 'application/json'},
     })
-    .then(res => res.json())
-    .then(json => {
-      if (json.success) {
-        this._reset();
-      } else {
-        throw new Error(json.errorMessage);
-      }
+    .then((res) => this._fetchHandler(res))
+    .then(() => {
+      this._reset(); // Logout successful
     });
   }
 
   register(email, password) {
-    return fetch('/api/account/signup', {
+    return fetch('/user', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
         email: email,
         password: password,
       }),
     })
-    .then(res => res.json())
-    .then(json => {
-      if (json.success) {
-        this._email = json.email;
-      } else {
-        throw new Error(json.errorMessage);
-      }
+    .then((res) => this._fetchHandler(res))
+    .then((json) => {
+      this._email = json.email; // Registration successful
     });
   }
 
@@ -87,6 +70,26 @@ class User {
 
   _reset() {
     this._email = '';
+  }
+
+  _fetchHandler(response) {
+    if (response.ok) {
+      return response.json().then((json) => {
+        // The status was ok and there is a json body
+        return Promise.resolve(json);
+      }).catch(() => {
+        // The status was ok but there is no json body
+        return Promise.resolve(null);
+      });
+    } else {
+      return response.json().catch(() => {
+        // The status was not ok and there is no json body
+        throw new Error(response.statusText);
+      }).then(json => {
+        // The status was not ok but there is a json body
+        throw new Error(json.errorMessage);
+      });
+    }
   }
 }
 

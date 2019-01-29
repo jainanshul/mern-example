@@ -32,7 +32,7 @@ class Home extends Component {
       });
 
       // Go to login screen
-      this.props.history.push('/auth');
+      this.props.history.push('/login');
     })
     .catch((error) => {
       this.setState({

@@ -36,7 +36,7 @@ class PrivateRoute extends React.Component {
     })
     .catch((error) => {
       console.log(`Error getting current session. Error: ${error}`);
-      this.props.history.push('/auth');
+      this.props.history.push('/login');
     });
   }
 

@@ -27,38 +27,31 @@ const regValidation = [
 ];
 
 module.exports = (app) => { // eslint-disable-line import/no-commonjs
-  /*
-   * Sign up
-   */
-  app.post('/api/account/signup', regValidation, (req, res) => {
+  app.post('/user', regValidation, async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.send({
-        success: false,
+      return res.status(400).send({
         errorMessage: errors.array().reduce((acc, cur) => `${cur.msg}. ${acc}`, ''),
       });
     }
 
-    const {body} = req;
-    const {password, email} = body;
-
-    // Save the new user
-    const newUser = new User();
-    newUser.email = email;
-    newUser.password = newUser.generateHash(password);
-    newUser.save((err) => {
-      if (err) {
-        return res.send({
-          success: false,
-          errorMessage: 'Error: Unknown server error'
-        });
-      }
+    try {
+      // Save the new user
+      const {password, email} = req.body;
+      const newUser = new User();
+      newUser.email = email;
+      newUser.password = newUser.generateHash(password);
+      await newUser.save();
 
       req.session.userId = newUser._id; // Save the session id
-      return res.send({
-        success: true,
+
+      return res.status(201).send({
         email: newUser.email,
       });
-    });
+    } catch(error) {
+      return res.status(400).send({
+        errorMessage: error.message,
+      });
+    }
   });
 };

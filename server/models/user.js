@@ -30,7 +30,7 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
-const reasons = UserSchema.statics.failedLogin = {
+UserSchema.statics.failedLogin = {
   NOT_FOUND: 0,
   PASSWORD_INCORRECT: 1,
   MAX_ATTEMPTS: 2
@@ -49,13 +49,13 @@ UserSchema.methods.validPassword = function (password) {
   return bcrypt.compareSync(password, this.password);
 };
 
-UserSchema.methods.incLoginAttempts = function(cb) {
+UserSchema.methods.incLoginAttempts = function() {
   // If we have a previous lock that has expired, restart at 1
   if (this.lockUntil && this.lockUntil < Date.now()) {
     return this.update({
       $set: { loginAttempts: 1 },
       $unset: { lockUntil: 1 }
-    }, cb);
+    }).exec();
   }
 
   // Otherwise we're incrementing
@@ -66,63 +66,43 @@ UserSchema.methods.incLoginAttempts = function(cb) {
     updates.$set = { lockUntil: Date.now() + LOCK_TIME };
   }
 
-  return this.update(updates, cb);
+  return this.update(updates).exec();
 };
 
-UserSchema.statics.getAuthenticated = function(email, password, cb) {
-  this.findOne({ email: email }, function(err, user) {
-    if (err) {
-      return cb(err);
-    }
+UserSchema.statics.getAuthenticated = async function(email, password) {
+  // Make sure the user exists
+  const user = await this.findOne({email: email}).exec();
+  if (!user) {
+    throw new Error('No such user found');
+  }
 
-    // Make sure the user exists
-    if (!user) {
-      return cb(null, null, reasons.NOT_FOUND);
-    }
+  // Check if the account is currently locked
+  if (user.isLocked) {
+    // Just increment login attempts if account is already locked
+    await user.incLoginAttempts();
+    throw new Error('Max login attempt exceeded. Account is locked.');
+  }
 
-    // Check if the account is currently locked
-    if (user.isLocked) {
-      // Just increment login attempts if account is already locked
-      return user.incLoginAttempts(function(err) {
-        if (err) {
-          return cb(err);
-        }
+  // Test for a matching password
+  if (!user.validPassword(password)) {
+    // Password is incorrect, so increment login attempts before responding
+    await user.incLoginAttempts();
+    throw new Error('Invalid password');
+  }
 
-        return cb(null, null, reasons.MAX_ATTEMPTS);
-      });
-    }
+  // If there's no lock or failed attempts, just return the user
+  if (!user.loginAttempts && !user.lockUntil) {
+    return user;
+  } else {
+    // Reset attempts and lock info
+    var updates = {
+      $set: { loginAttempts: 0 },
+      $unset: { lockUntil: 1 }
+    };
 
-    // Test for a matching password
-    if (!user.validPassword(password)) {
-      // Password is incorrect, so increment login attempts before responding
-      user.incLoginAttempts(function(err) {
-        if (err) {
-          return cb(err);
-        }
-
-        return cb(null, null, reasons.PASSWORD_INCORRECT);
-      });
-    } else {
-      // If there's no lock or failed attempts, just return the user
-      if (!user.loginAttempts && !user.lockUntil) {
-        return cb(null, user);
-      }
-
-      // Reset attempts and lock info
-      var updates = {
-        $set: { loginAttempts: 0 },
-        $unset: { lockUntil: 1 }
-      };
-
-      return user.update(updates, function(err) {
-        if (err) {
-          return cb(err);
-        }
-
-        return cb(null, user);
-      });
-    }
-  });
+    await user.update(updates).exec();
+    return user;
+  }
 };
 
 export default mongoose.model('User', UserSchema);
