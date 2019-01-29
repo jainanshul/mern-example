@@ -1,7 +1,5 @@
 import express from 'express';
-import session from 'express-session';
 import mongoose from 'mongoose';
-import connectMongo from 'connect-mongo';
 import cors from 'cors';
 
 import routes from './routes';
@@ -18,15 +16,6 @@ const port = process.env.PORT || 5000;
 mongoose.connect(process.env.DB_URL, { useNewUrlParser: true })
 .then(() => console.log('Database connected successfully'))
 .catch(err => console.log(err));
-
-// Setup session
-const MongoStore = connectMongo(session);
-app.use(session({
-  secret: 'my random secret',
-  resave: true,
-  saveUninitialized: false,
-  store: new MongoStore({mongooseConnection: mongoose.connection}),
-}));
 
 // Setup CORS
 app.use(cors());

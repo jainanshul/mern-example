@@ -25,21 +25,20 @@ class Home extends Component {
       error: '',
     });
 
-    user.logout()
-    .then(() => {
+    try {
+      user.logout();
       this.setState({
         isLoading: false
       });
 
       // Go to login screen
       this.props.history.push('/login');
-    })
-    .catch((error) => {
+    } catch(error) {
       this.setState({
         isLoading: false,
         error: error.message,
       });
-    });
+    }
   }
 
   render() {

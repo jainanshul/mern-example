@@ -21,17 +21,17 @@ class Register extends React.Component {
     this.setState({ [name]: value });
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = async (e) => {
     e.preventDefault();
 
     this.setState({
       isLoading: true,
       error: '',
     });
-    const { email, password } = this.state;
 
-    user.register(email, password)
-    .then(() => {
+    const {email, password} = this.state;
+    try {
+      await user.register(email, password);
       this.setState({
         isLoading: false,
         email: '',
@@ -40,13 +40,12 @@ class Register extends React.Component {
 
       // Go to home
       this.props.history.push('/');
-    })
-    .catch((error) => {
+    } catch(error) {
       this.setState({
         error: error.message,
         isLoading: false,
       });
-    });
+    }
   }
 
   render() {

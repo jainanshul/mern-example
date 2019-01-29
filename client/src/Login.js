@@ -21,7 +21,7 @@ class Login extends React.Component {
     this.setState({ [name]: value });
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = async (e) => {
     e.preventDefault();
 
     this.setState({
@@ -30,8 +30,8 @@ class Login extends React.Component {
     });
     const { signInEmail, signInPassword } = this.state;
 
-    user.login(signInEmail, signInPassword)
-    .then(() => {
+    try {
+      await user.login(signInEmail, signInPassword);
       this.setState({
         isLoading: false,
         signInPassword: '',
@@ -40,13 +40,12 @@ class Login extends React.Component {
 
       // Go to home
       this.props.history.push('/');
-    })
-    .catch((error) => {
+    } catch(error) {
       this.setState({
         error: error.message,
         isLoading: false,
       });
-    });
+    }
   }
 
   render() {

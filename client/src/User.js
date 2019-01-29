@@ -3,73 +3,77 @@ class User {
     this._reset();
   }
 
-  isLoggedIn() {
-    return this._getCurrentSession();
-  }
-
   info() {
-    return this._email;
+    return this._user ? this._user.email : '';
   }
 
-  login(email, password) {
-    return fetch('/user/login', {
+  async login(email, password) {
+    const res = await fetch('/user/login', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
         email: email,
         password: password,
       }),
-    })
-    .then((res) => this._fetchHandler(res))
-    .then((json) => {
-      this._email = json.email; // Login successful
     });
+
+    const json = await this._fetchHandler(res);
+
+    // Login successful; store the user and the JWT token
+    localStorage.setItem('jwtToken', json.token);
+    this._user = json.user;
   }
 
   logout() {
-    return fetch('/user/logout', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-    })
-    .then((res) => this._fetchHandler(res))
-    .then(() => {
-      this._reset(); // Logout successful
-    });
+    localStorage.removeItem('jwtToken');
+    this._reset();
   }
 
-  register(email, password) {
-    return fetch('/user', {
+  async register(email, password) {
+    const res = await fetch('/user', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
         email: email,
         password: password,
       }),
-    })
-    .then((res) => this._fetchHandler(res))
-    .then((json) => {
-      this._email = json.email; // Registration successful
     });
+
+    const json = await this._fetchHandler(res);
+
+    // Registration successful; store the user and the JWT token
+    localStorage.setItem('jwtToken', json.token);
+    this._user = json.user;
   }
 
-  _getCurrentSession() {
-    return fetch('/api/account/session', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-    })
-    .then(res => res.json())
-    .then(json => {
-      // Has valid session
-      if (json.success) {
-        this._email = json.email;
-      } else {
-        throw new Error(json.errorMessage);
-      }
+  async getCurrentUser() {
+    const res = await fetch('/user', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`,
+        'Content-Type': 'application/json',
+      },
     });
+
+    const json = await this._fetchHandler(res);
+    this._user = json.user;
+  }
+
+  async getAllUsers() {
+    const res = await fetch('/users', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const json = await this._fetchHandler(res);
+    return json.users;
   }
 
   _reset() {
-    this._email = '';
+    this._user = null;
   }
 
   _fetchHandler(response) {

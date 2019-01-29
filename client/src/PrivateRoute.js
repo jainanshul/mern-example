@@ -28,16 +28,15 @@ class PrivateRoute extends React.Component {
     this.unlisten();
   }
 
-  _authenticate() {
-    user.isLoggedIn()
-    .then(() => {
+  async _authenticate() {
+    try {
+      await user.getCurrentUser();
       console.log(`Has an active session`);
       this.setState({loaded: true, isAuthenticated: true});
-    })
-    .catch((error) => {
-      console.log(`Error getting current session. Error: ${error}`);
+    } catch(error) {
+      console.log(`Invalid session. ${error}`);
       this.props.history.push('/login');
-    });
+    }
   }
 
   render() {
