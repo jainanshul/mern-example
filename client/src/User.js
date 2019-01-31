@@ -29,13 +29,14 @@ class User {
     this._reset();
   }
 
-  async register(email, password) {
+  async register(email, password, role) {
     const res = await fetch('/user', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
         email: email,
         password: password,
+        role: role,
       }),
     });
 

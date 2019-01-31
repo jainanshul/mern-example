@@ -3,8 +3,8 @@ import jwt from 'jsonwebtoken';
 const expiresIn = '2d';
 const issuer = 'http://localhost';
 
-export function getToken(user) {
-  const payload = {user: user.email};
+export function getToken(user, role) {
+  const payload = {user: user.email, role};
   const options = {expiresIn: expiresIn, issuer: issuer};
   const secret = process.env.JWT_SECRET;
 
@@ -12,9 +12,9 @@ export function getToken(user) {
 }
 
 export function validateToken(req, res, next) {
-  const authorizationHeaader = req.headers.authorization;
+  const authorizationHeader = req.headers.authorization;
   let result;
-  if (authorizationHeaader) {
+  if (authorizationHeader) {
     const token = req.headers.authorization.split(' ')[1]; // Bearer <token>
     const options = {expiresIn: expiresIn, issuer: issuer};
 

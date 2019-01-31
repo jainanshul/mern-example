@@ -22,13 +22,14 @@ class Register extends React.Component {
       email: '',
       password: '',
       isLoading: false,
+      role: 'user',
       error: ''
     };
   }
 
   handleChange = (e) => {
-    const { name, value } = e.target;
-    this.setState({ [name]: value });
+    const {name, value} = e.target;
+    this.setState({[name]: value});
   }
 
   handleSubmit = async (e) => {
@@ -39,9 +40,9 @@ class Register extends React.Component {
       error: '',
     });
 
-    const {email, password} = this.state;
+    const {email, password, role} = this.state;
     try {
-      await user.register(email, password);
+      await user.register(email, password, role);
       this.setState({
         isLoading: false,
         email: '',
@@ -59,7 +60,7 @@ class Register extends React.Component {
   }
 
   render() {
-    const {username, password, isLoading, error} = this.state;
+    const {username, password, role, isLoading, error} = this.state;
     return (
       <Container>
         <Row><Col><h2>Register</h2></Col></Row>
@@ -68,11 +69,18 @@ class Register extends React.Component {
             <Form name="form" onSubmit={this.handleSubmit}>
               <FormGroup>
                 <Label for="username">Username</Label>
-                <Input type="text" name="email" value={username} onChange={this.handleChange} />
+                <Input type="text" name="email" value={username} onChange={this.handleChange}/>
               </FormGroup>
               <FormGroup>
                 <Label for="password">Password</Label>
-                <Input type="password" name="password" value={password} onChange={this.handleChange} />
+                <Input type="password" name="password" value={password} onChange={this.handleChange}/>
+              </FormGroup>
+              <FormGroup>
+                <Label for="role">Roles</Label>
+                <Input type="select" name="role" value={role} onChange={this.handleChange}>
+                  <option>user</option>
+                  <option>admin</option>
+                </Input>
               </FormGroup>
               <FormGroup>
                 <Button color="primary" disabled={isLoading}>Register</Button>

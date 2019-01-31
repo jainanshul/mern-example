@@ -38,6 +38,7 @@ class Home extends Component {
     const userList = users ? users.map((user, i) => (
       <tr key={i}>
         <td>{user.email}</td>
+        <td>{user.role.name}</td>
         <td>{user.loginAttempts}</td>
         <td>{new Date(user.signUpDate).toDateString()}</td>
         <td>{user.lockUntil ? new Date(user.lockUntil).toString() : ''}</td>
@@ -56,10 +57,11 @@ class Home extends Component {
           {userList &&
             <Row style={{padding: 10}}>
               <Col>
-                <Table dark>
+                <Table striped>
                   <thead>
                     <tr>
                       <th>Email</th>
+                      <th>Role</th>
                       <th>Login attempts</th>
                       <th>Sign up date</th>
                       <th>Locked until</th>

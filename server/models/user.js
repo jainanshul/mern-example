@@ -28,6 +28,11 @@ const UserSchema = new mongoose.Schema({
   lockUntil: {
     type: Number
   },
+  role: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Role',
+    required: true,
+  }
 });
 
 UserSchema.statics.failedLogin = {
@@ -71,7 +76,7 @@ UserSchema.methods.incLoginAttempts = function() {
 
 UserSchema.statics.getAuthenticated = async function(email, password) {
   // Make sure the user exists
-  const user = await this.findOne({email: email}).exec();
+  const user = await this.findOne({email: email}).populate('role').exec();
   if (!user) {
     throw new Error('No such user found');
   }
