@@ -1,8 +1,8 @@
 ### Prerequisites
 #### Install dependencies
 ```
-npm run install
-cd client && npm run install
+npm install
+cd client && npm install
 ```
 
 #### Setup database server
@@ -10,7 +10,7 @@ cd client && npm run install
 brew install mongodb
 mkdir -p /data/db
 sudo mkdir -p /data/db
-`mongod`
+mongod
 ```
 
 Use `mongo` command to interactively start the shell and run `use turbo_db` to
