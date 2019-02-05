@@ -23,6 +23,15 @@ app.use(cors());
 // Setup API routes
 routes(app);
 
+// Setup error handler
+app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
+  // Show stack trace in the development environment
+  if (process.env.NODE_ENV !== 'production') {
+    console.error(err.stack);
+  }
+  res.status(500).send('Internal server error');
+});
+
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
