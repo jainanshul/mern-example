@@ -32,13 +32,22 @@ const registerValidation = [
   .withMessage('Password is required')
   .isLength({min: 8})
   .withMessage('Password should be at least 8 characters'),
-  check('email').custom(value => {
+  check('email')
+  .custom(value => {
     return User.findOne({email: value}).then((user) => {
       if (user) {
         throw new Error('This email is already in use');
       }
     });
-  })
+  }),
+  check('role')
+  .trim()
+  .escape()
+  .not()
+  .isEmpty()
+  .withMessage('Role is required')
+  .isIn(['user', 'admin'])
+  .withMessage('Invalid role')
 ];
 
 async function login(req, res) {
