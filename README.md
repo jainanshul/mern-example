@@ -1,3 +1,5 @@
+### Sample webapp to demonstrate user account creation and user session
+
 ### Prerequisites
 #### Install dependencies
 ```
