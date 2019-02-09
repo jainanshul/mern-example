@@ -1,4 +1,4 @@
 --ui tdd
---require babel-polyfill
---require babel-register
+--require @babel/polyfill
+--require @babel/register
 --timeout 5000

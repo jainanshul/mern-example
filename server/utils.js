@@ -35,7 +35,7 @@ export function validateToken(req, res, next) {
     }
   } else {
     res.status(401).send({
-      errorMessage: `Authentication error. Token required.`,
+      errorMessage: `Authentication token required`,
     });
   }
 }
