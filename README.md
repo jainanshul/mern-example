@@ -1,4 +1,4 @@
-### Sample webapp to demonstrate user account creation and user session
+### Sample MERN (Mongodb, express, react and node) application to demonstrate user account creation and user sessions
 
 ### Prerequisites
 #### Install dependencies
